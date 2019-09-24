@@ -1,0 +1,22 @@
+// ROOT (RUNTIME) --
+Parser
+Lexer
+Token
+ParserRuleContext
+
+// MISC ------------
+Interval
+
+// ATN -------------
+ATNDeserializer
+ParserATNSimulator
+ATN
+LexerATNSimulator
+PredictionContextCache
+
+// DFA -------------
+DFA
+
+// TREE ------------
+ParseTreeListener
+ParseTreeVisitor
