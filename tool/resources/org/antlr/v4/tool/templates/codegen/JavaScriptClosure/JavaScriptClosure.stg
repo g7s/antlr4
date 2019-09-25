@@ -56,42 +56,42 @@ closureTypeMap ::= [
 
 ParserFile(file, parser, namedActions, contextSuperClass) ::= <<
 <fileHeader(file.grammarFileName, file.ANTLRVersion)>
-goog.module('<if(file.genPackage)><file.genPackage>.<endif><file.parserName>');
+goog.module("<if(file.genPackage)><file.genPackage>.<endif><file.parser.name>");
 goog.module.declareLegacyNamespace();
 
 
 <namedActions.header>
-const ATNDeserializer = goog.require('org.antlr.v4.runtime.atn.ATNDeserializer');
-const ParserATNSimulator = goog.require('org.antlr.v4.runtime.atn.ParserATNSimulator');
 const ATN = goog.require('org.antlr.v4.runtime.atn.ATN');
+const ParserATNSimulator = goog.require('org.antlr.v4.runtime.atn.ParserATNSimulator');
+const ATNDeserializer = goog.require('org.antlr.v4.runtime.atn.ATNDeserializer');
 const LexerATNSimulator = goog.require('org.antlr.v4.runtime.atn.LexerATNSimulator');
 const PredictionContextCache = goog.require('org.antlr.v4.runtime.atn.PredictionContextCache');
-const Parser = goog.require('org.antlr.v4.runtime.Parser');
 const Lexer = goog.require('org.antlr.v4.runtime.Lexer');
 const Token = goog.require('org.antlr.v4.runtime.Token');
 const ParserRuleContext = goog.require('org.antlr.v4.runtime.ParserRuleContext');
 const DFA = goog.require('org.antlr.v4.runtime.dfa.DFA');
 const Interval = goog.require('org.antlr.v4.runtime.misc.Interval');
-const ParseTreeListener = goog.require('org.antlr.v4.runtime.tree.ParseTreeListener);
-const ParseTreeVisitor = goog.require('org.antlr.v4.runtime.tree.ParseTreeVisitor);
+const ParseTreeListener = goog.require('org.antlr.v4.runtime.tree.ParseTreeListener');
+const ParseTreeVisitor = goog.require('org.antlr.v4.runtime.tree.ParseTreeVisitor');
+const VocabularyImpl = goog.require('org.antlr.v4.runtime.VocabularyImpl');
+const RuntimeMetaData = goog.require('org.antlr.v4.runtime.RuntimeMetaData');
+const RecognitionException = goog.require('org.antlr.v4.runtime.RecognitionException');
+const NoViableAltException = goog.require('org.antlr.v4.runtime.NoViableAltException');
+const FailedPredicateException = goog.require('org.antlr.v4.runtime.FailedPredicateException');
 <if(file.genListener)>
-const <file.grammarName>Listener = goog.require('<if(file.genPackage)><file.genPackage>.<endif><file.grammarName>Listener');
+const <file.grammarName>Listener = goog.require("<if(file.genPackage)><file.genPackage>.<endif><file.grammarName>Listener");
 <endif>
 <if(file.genVisitor)>
-const <file.grammarName>Visitor = goog.require('<if(file.genPackage)><file.genPackage>.<endif><file.grammarName>Visitor');
+const <file.grammarName>Visitor = goog.require("<if(file.genPackage)><file.genPackage>.<endif><file.grammarName>Visitor");
 <endif>
 <parser>
-
-
-exports = <file.parserName>;
-
 >>
 
 
 
 ListenerFile(file, header, namedActions) ::= <<
 <fileHeader(file.grammarFileName, file.ANTLRVersion)>
-goog.module('<if(file.genPackage)><file.genPackage>.<endif><file.grammarName>Listener');
+goog.module("<if(file.genPackage)><file.genPackage>.<endif><file.grammarName>Listener");
 goog.module.declareLegacyNamespace();
 <header>
 
@@ -140,7 +140,7 @@ exports = <file.grammarName>Listener;
 
 BaseListenerFile(file, header, namedActions) ::= <<
 <fileHeader(file.grammarFileName, file.ANTLRVersion)>
-goog.module('<if(file.genPackage)><file.genPackage>.<endif><file.grammarName>BaseListener');
+goog.module("<if(file.genPackage)><file.genPackage>.<endif><file.grammarName>BaseListener");
 goog.module.declareLegacyNamespace();
 <header>
 
@@ -206,7 +206,7 @@ exports = <file.grammarName>BaseListener;
 
 VisitorFile(file, header, namedActions) ::= <<
 <fileHeader(file.grammarFileName, file.ANTLRVersion)>
-goog.module('<if(file.genPackage)><file.genPackage>.<endif><file.grammarName>Visitor');
+goog.module("<if(file.genPackage)><file.genPackage>.<endif><file.grammarName>Visitor");
 goog.module.declareLegacyNamespace();
 <header>
 
@@ -233,7 +233,7 @@ class <file.grammarName>Visitor extends ParseTreeVisitor {
  * @param {<if(file.genPackage)><file.genPackage>.<endif><file.parserName>.<lname; format="cap">Context\} ctx the parse tree
  * @return {T\} the visitor result
  */
-visit<lname; format="cap">(ctx) {}}; separator="\n">
+visit<lname; format="cap">(ctx) {\}}; separator="\n">
 }
 
 
@@ -245,7 +245,7 @@ exports = <file.grammarName>Visitor;
 
 BaseVisitorFile(file, header, namedActions) ::= <<
 <fileHeader(file.grammarFileName, file.ANTLRVersion)>
-goog.module('<if(file.genPackage)><file.genPackage>.<endif><file.grammarName>BaseVisitor');
+goog.module("<if(file.genPackage)><file.genPackage>.<endif><file.grammarName>BaseVisitor");
 goog.module.declareLegacyNamespace();
 <header>
 
@@ -261,7 +261,7 @@ const AbstractParseTreeVisitor = goog.require('org.antlr.v4.runtime.tree.Abstrac
  * @implements {<if(file.genPackage)><file.genPackage>.<endif><file.grammarName>Visitor\<T>}
  * @extends {AbstractParseTreeVisitor\<T>}
  */
-public class <file.grammarName>BaseVisitor extends AbstractParseTreeVisitor {
+class <file.grammarName>BaseVisitor extends AbstractParseTreeVisitor {
 	<file.visitorNames:{lname |
 /**
  * The default implementation returns the result of calling
@@ -287,47 +287,37 @@ Parser(parser, funcs, atn, sempredFuncs, superClass) ::= <<
 
 Parser_(parser, funcs, atn, sempredFuncs, ctor, superClass) ::= <<
 <if(superClass)>
-const <superClass> = goog.require('<if(file.genPackage)><file.genPackage>.<endif><superClass>');
+const <superClass> = goog.require("<if(file.genPackage)><file.genPackage>.<endif><superClass>");
 <else>
 const Parser = goog.require('org.antlr.v4.runtime.Parser');
 <endif>
-const Token = goog.require('org.antlr.v4.runtime.Token');
-const ParserRuleContext = goog.require('org.antlr.v4.runtime.ParserRuleContext');
-const VocabularyImpl = goog.require('org.antlr.v4.runtime.VocabularyImpl');
-const RuntimeMetaData = goog.require('org.antlr.v4.runtime.RuntimeMetaData');
-const RecognitionException = goog.require('org.antlr.v4.runtime.RecognitionException');
-const NoViableAltException = goog.require('org.antlr.v4.runtime.NoViableAltException');
-const FailedPredicateException = goog.require('org.antlr.v4.runtime.FailedPredicateException');
-const PredictionContextCache = goog.require('org.antlr.v4.runtime.atn.PredictionContextCache');
-const ParserATNSimulator = goog.require('org.antlr.v4.runtime.atn.ParserATNSimulator');
-const ATN = goog.require('org.antlr.v4.runtime.atn.ATN');
 
 RuntimeMetaData.checkVersion("<file.ANTLRVersion>", RuntimeMetaData.VERSION);
 
 class <parser.name> extends <superClass; null="Parser"> {
+	<namedActions.members>
+	<parser:(ctor)()>
 	getGrammarFileName() {
         return "<parser.grammarFileName; format="java-escape">";
     }
-
 	getRuleNames() {
         return <parser.name>.ruleNames;
     }
-
 	getSerializedATN() {
         return <parser.name>._serializedATN;
     }
-
 	getATN() {
         return <parser.name>._ATN;
     }
-
-	<namedActions.members>
-	<parser:(ctor)()>
-	<funcs; separator="\n">
-
+	getTokenNames() {
+		return <parser.name>.tokenNames;
+	}
+	getVocabulary() {
+		return <parser.name>.VOCABULARY;
+	}
 <if(sempredFuncs)>
     /**
-     * @param {!org.antlr.v4.runtime.RuleContext} _localctx
+     * @param {org.antlr.v4.runtime.RuleContext} _localctx
      * @param {number} ruleIndex
      * @param {number} predIndex
      * @return {boolean}
@@ -336,28 +326,34 @@ class <parser.name> extends <superClass; null="Parser"> {
 		switch (ruleIndex) {
 		<parser.sempredFuncs.values:{f|
 case <f.ruleIndex>:
-	return <f.name>_sempred(/** @type {<f.ctxType>\} */ (_localctx), predIndex);}; separator="\n">
+	return this.<f.name>_sempred(/** @type {<f.ctxType>\} */ (_localctx), predIndex);}; separator="\n">
 		}
 		return true;
 	}
 	<sempredFuncs.values; separator="\n">
 <endif>
-
-	<atn>
-
-    getTokenNames() {
-        return <parser.name>.tokenNames;
-    }
-
-    getVocabulary() {
-        return <parser.name>.VOCABULARY;
-    }
 }
 
+exports = <parser.name>;
+
+<funcs; separator="\n">
+
+<atn>
+
 /**
- * @protected {!Array<org.antlr.v4.runtime.dfa.DFA>}
+ * @type {string}
  */
-<parser.name>._decisionToDFA = [];
+<parser.name>._serializedATN = _serializedATN;
+
+/**
+ * @type {!org.antlr.v4.runtime.atn.ATN}
+ */
+<parser.name>._ATN = _ATN;
+
+/**
+ * @protected {!Array\<org.antlr.v4.runtime.dfa.DFA>}
+ */
+<parser.name>._decisionToDFA = _decisionToDFA;
 
 /**
  * @protected {!PredictionContextCache}
@@ -371,14 +367,15 @@ case <f.ruleIndex>:
 <parser.rules:{r | <parser.name>.RULE_<r.name> = <r.index>;}; separator="\n", wrap, anchor>
 
 /**
- * @private {!Array<string>}
+ * @private
+ * @return {!Array\<string>}
  */
 <parser.name>.makeRuleNames = function () {
     return [<parser.ruleNames:{r | "<r>"}; separator=", ", wrap, anchor>];
 };
 
 /**
- * @type {!Array<string>}
+ * @type {!Array\<string>}
  */
 <parser.name>.ruleNames = <parser.name>.makeRuleNames();
 
@@ -390,27 +387,27 @@ case <f.ruleIndex>:
 vocabulary(name, literalNames, symbolicNames) ::= <<
 /**
  * @private
- * @return {!Array<?string>}
+ * @return {!Array\<?string>}
  */
 <name>.makeLiteralNames = function () {
 	return [<literalNames:{t | <t>}; null="null", separator=", ", wrap, anchor>];
 };
 
 /**
- * @private {!Array<?string>}
+ * @private {!Array\<?string>}
  */
 <name>._LITERAL_NAMES = <name>.makeLiteralNames();
 
 /**
  * @private
- * @return {!Array<?string>}
+ * @return {!Array\<?string>}
  */
-<name>.makeSymbolicNames() {
+<name>.makeSymbolicNames = function () {
 	return [<symbolicNames:{t | <t>}; null="null", separator=", ", wrap, anchor>];
 }
 
 /**
- * @private {!Array<?string>}
+ * @private {!Array\<?string>}
  */
 <name>._SYMBOLIC_NAMES = <name>.makeSymbolicNames();
 
@@ -421,10 +418,10 @@ vocabulary(name, literalNames, symbolicNames) ::= <<
 
 /**
  * @deprecated Use {@link #VOCABULARY} instead.
- * @type {!Array<string>}
+ * @type {!Array\<?string>}
  */
 <name>.tokenNames = [];
-for (var i = 0; i \< <name>._SYMBOLIC_NAMES.length; i++) {
+for (let i = 0; i \< <name>._SYMBOLIC_NAMES.length; i++) {
     <name>.tokenNames[i] = <name>.VOCABULARY.getLiteralName(i);
     if (<name>.tokenNames[i] == null) {
         <name>.tokenNames[i] = <name>.VOCABULARY.getSymbolicName(i);
@@ -444,7 +441,7 @@ action(_localctx, ruleIndex, actionIndex) {
 	switch (ruleIndex) {
 	<recog.actionFuncs.values:{f|
 case <f.ruleIndex>:
-	<f.name>_action(/** @type {<f.ctxType>} */ (_localctx), actionIndex);
+	<f.name>_action(/** @type {<f.ctxType>\} */ (_localctx), actionIndex);
 	break;}; separator="\n">
 	}
 }
@@ -457,7 +454,7 @@ sempred(_localctx, ruleIndex, predIndex) {
 	switch (ruleIndex) {
 	<recog.sempredFuncs.values:{f|
 case <f.ruleIndex>:
-	return <f.name>_sempred(/** @type {<f.ctxType>} */ (_localctx), predIndex);}; separator="\n">
+	return <f.name>_sempred(/** @type {<f.ctxType>\} */ (_localctx), predIndex);}; separator="\n">
 	}
 	return true;
 }
@@ -523,7 +520,6 @@ case <index>:
 >>
 
 
-
 RuleFunction(currentRule,args,code,locals,ruleCtx,altLabelCtxs,namedActions,finallyAction,postamble,exceptions) ::= <<
 
 <ruleCtx>
@@ -534,7 +530,7 @@ RuleFunction(currentRule,args,code,locals,ruleCtx,altLabelCtxs,namedActions,fina
  * @return {<currentRule.ctxType>}
  * @throws {RecognitionException}
  */
-<currentRule.name>(<currentRule.args:{a | <a.name>}; separator=", ">) {
+<parser.name>.prototype.<currentRule.name> = function (<currentRule.args:{a | <a.name>}; separator=", ">) {
 	var _localctx = new <currentRule.ctxType>(this._ctx, this.getState()<currentRule.args:{a | , <a.name>}>);
 	this.enterRule(_localctx, <currentRule.startState>, <parser.name>.RULE_<currentRule.name>);
 	<namedActions.init>
@@ -568,8 +564,7 @@ RuleFunction(currentRule,args,code,locals,ruleCtx,altLabelCtxs,namedActions,fina
 		this.exitRule();
 	}
 	return _localctx;
-}
-
+};
 >>
 
 
@@ -581,18 +576,13 @@ LeftRecursiveRuleFunction(currentRule,args,code,locals,ruleCtx,altLabelCtxs,
 <ruleCtx>
 <altLabelCtxs:{l | <altLabelCtxs.(l)>}; separator="\n">
 
-
-<currentRule.name>(<args; separator=", ">) throws RecognitionException {
-	return <currentRule.name>(0<currentRule.args:{a | , <a.name>}>);
-}
-
 /**
  * @param {number|null|undefined} _p
 <currentRule.args:{a | * @param {<if(closureTypeMap.(a.type))><closureTypeMap.(a.type)><else><a.type><endif>\} <a.name>}; separator="\n ">
  * @return {<currentRule.ctxType>}
  * @throws {RecognitionException}
  */
-<currentRule.name>(_p<args:{a | , <a.name>}>) {
+<parser.name>.prototype.<currentRule.name> = function (_p<args:{a | , <a.name>}>) {
     if(_p == null) {
         _p = 0;
     }
@@ -629,7 +619,7 @@ LeftRecursiveRuleFunction(currentRule,args,code,locals,ruleCtx,altLabelCtxs,
 		this.unrollRecursionContexts(_parentctx);
 	}
 	return _localctx;
-}
+};
 >>
 
 
@@ -754,7 +744,7 @@ case <i><if(!choice.ast.greedy)>+1<endif>:
 StarBlock(choice, alts, sync, iteration) ::= <<
 this.setState(<choice.stateNumber>);
 this._errHandler.sync(this);
-var _alt = this.getInterpreter().adaptivePredict(this._input, <choice.decision>, this._ctx);
+_alt = this.getInterpreter().adaptivePredict(this._input, <choice.decision>, this._ctx);
 while (_alt != <choice.exitAlt> && _alt != ATN.INVALID_ALT_NUMBER) {
 	if (_alt == 1<if(!choice.ast.greedy)>+1<endif> ) {
 		<iteration>
@@ -771,7 +761,7 @@ while (_alt != <choice.exitAlt> && _alt != ATN.INVALID_ALT_NUMBER) {
 PlusBlock(choice, alts, error) ::= <<
 this.setState(<choice.blockStartStateNumber>); <! alt block decision !>
 this._errHandler.sync(this);
-var _alt = 1<if(!choice.ast.greedy)>+1<endif>;
+_alt = 1<if(!choice.ast.greedy)>+1<endif>;
 do {
 	switch (_alt) {
 	<alts:{alt|
@@ -877,7 +867,7 @@ this.setState(<m.stateNumber>);
 <if(m.labels)><m.labels:{l | <labelref(l)> = }>this._input.LT(1);<endif>
 <capture>
 if (<if(invert)><m.varName> \<= 0 || <else>!<endif>(<expr>)) {
-	<if(m.labels)><m.labels:{l | <labelref(l)> = /** @type {Token} */ (}><endif>this._errHandler.recoverInline(this)<if(m.labels)>)<endif>;
+	<if(m.labels)><m.labels:{l | <labelref(l)> = /** @type {Token\} */ (}><endif>this._errHandler.recoverInline(this)<if(m.labels)>)<endif>;
 }
 else {
 	if (this._input.LA(1) == Token.EOF) this.matchedEOF = true;
@@ -980,25 +970,67 @@ RuleContextListDecl(rdecl) ::= "/** @type {!Array\<<rdecl.ctxName>>} */ this.<rd
 
 
 
-ContextTokenListIndexedGetterDecl(t)      ::= <<
+ContextTokenGetterDecl(t) ::= <<
+/**
+ * @return {org.antlr.v4.runtime.tree.TerminalNode}
+ */
+<t.name>() {
+    return this.getToken(<parser.name>.<t.name>, 0);
+}
+>>
+
+// should never be called
+ContextTokenListGetterDecl(t) ::= <<
+/**
+ * @return {Array\<org.antlr.v4.runtime.tree.TerminalNode>}
+ */
+<t.name>List() {
+    return this.getTokens(<parser.name>.<t.name>);
+}
+>>
+
+ContextTokenListIndexedGetterDecl(t) ::= <<
 /**
  * @param {number=} i
- * @return {org.antlr.v4.runtime.TerminalNode}
+ * @return {org.antlr.v4.runtime.tree.TerminalNode|Array\<org.antlr.v4.runtime.tree.TerminalNode>}
  */
 <t.name>(i) {
-    return this.getToken(<parser.name>.<t.name>, i || 0);
+    return i == null ? this.getTokens(<parser.name>.<t.name>) : this.getToken(<parser.name>.<t.name>, i);
 }
 >>
 
 
 
-ContextRuleListIndexedGetterDecl(r)       ::= <<
+ContextRuleGetterDecl(r) ::= <<
 /**
- * @param {number=} i
  * @return {<r.ctxName>}
  */
+<r.name>() {
+    return /** @type {<r.ctxName>} */ (this.getRuleContext(<r.ctxName>, 0));
+}
+>>
+
+// should never be called
+ContextRuleListGetterDecl(r) ::= <<
+/**
+ * @return {Array\<<r.ctxName>\>}
+ */
+<r.name>List {
+    return /** @type {Array\<<r.ctxName>\>} */ (this.getRuleContexts(<r.ctxName>));
+}
+>>
+
+ContextRuleListIndexedGetterDecl(r) ::= <<
+/**
+ * @param {number=} i
+ * @return {<r.ctxName>|Array\<<r.ctxName>\>}
+ */
 <r.name>(i) {
-    return this.getTypedRuleContext(<r.ctxName>, i || 0);
+    if (i == null) {
+        return /** @type {Array\<<r.ctxName>\>} */ (this.getRuleContexts(<r.ctxName>));
+    } else {
+        return /** @type {<r.ctxName>} */ (this.getRuleContext(<r.ctxName>, i));
+    }
 }
 >>
 
@@ -1029,27 +1061,24 @@ CaptureNextTokenType(d) ::= "<d.varName> = this._input.LA(1);"
 
 StructDecl(struct,ctorAttrs,attrs,getters,dispatchMethods,interfaces,extensionMembers)
 	::= <<
-/**
- * <if(interfaces)>@implements {<interfaces; separator=", ">}<endif>
- */
+<if(interfaces)>/** @implements {<interfaces; separator=", ">} */<endif>
 class <struct.name> extends <if(contextSuperClass)><contextSuperClass><else>ParserRuleContext<endif> {
     /**
      * @param {ParserRuleContext=} parent
      * @param {number=} invokingState<ctorAttrs:{a | \n     * @param {<if(closureTypeMap.(a.type))><closureTypeMap.(a.type)><else><a.type><endif>=\} <a.name>}>
      */
-	constructor(parent, invokingState<ctorAttrs:{a | , <a.name>}>) {
+    constructor(parent, invokingState<ctorAttrs:{a | , <a.name>}>) {
 		super(parent, invokingState);
-		<struct.ctorAttrs:{a | /** @type {<if(closureTypeMap.(a.type))><closureTypeMap.(a.type)><else><a.type><endif>} */ this.<a.name> = <a.name>;}; separator="\n">
+        <attrs:{a | <a>}; separator="\n">
+		<struct.ctorAttrs:{a | /** @type {<if(closureTypeMap.(a.type))><closureTypeMap.(a.type)><else><a.type><endif>\} */ this.<a.name> = <a.name>;}; separator="\n">
 	}
-
-	getRuleIndex() {
+    getRuleIndex() {
         return <parser.name>.RULE_<struct.derivedFromName>;
     }
-
     <getters:{g | <g>}; separator="\n">
 <if(struct.provideCopyFrom)> <! don't need copy unless we have subclasses !>
     /**
-     * @param {<struct.name>} ctx
+     * @param {ParserRuleContext} ctx
      * @return {void}
      */
 	copyFrom(ctx) {
@@ -1060,6 +1089,10 @@ class <struct.name> extends <if(contextSuperClass)><contextSuperClass><else>Pars
 	<dispatchMethods; separator="\n">
 	<extensionMembers; separator="\n">
 }
+
+<! export this struct/context class !>
+exports.<struct.name> = <struct.name>;
+
 >>
 
 
@@ -1074,9 +1107,8 @@ class <struct.name> extends <currentRule.name; format="cap">Context {
         <attrs:{a | <a>;}; separator="\n">
         this.copyFrom(ctx);
     }
-
     <getters:{g | <g>}; separator="\n">
-	<dispatchMethods; separator="\n">
+<dispatchMethods; separator="\n">
 }
 
 <! export this struct/context class !>
@@ -1176,26 +1208,30 @@ _prevctx = _localctx;
 
 LexerFile(lexerFile, lexer, namedActions) ::= <<
 <fileHeader(lexerFile.grammarFileName, lexerFile.ANTLRVersion)>
-goog.module('<if(file.genPackage)><file.genPackage>.<endif><lexer.name>');
+goog.module("<if(lexerFile.genPackage)><lexerFile.genPackage>.<endif><lexerFile.lexer.name>");
 goog.module.declareLegacyNamespace();
 
 
 <namedActions.header>
-const RuntimeMetaData = goog.require('org.anltr.v4.runtime.RuntimeMetaData');
+const RuntimeMetaData = goog.require('org.antlr.v4.runtime.RuntimeMetaData');
 const VocabularyImpl = goog.require('org.antlr.v4.runtime.VocabularyImpl');
 const ATNDeserializer = goog.require('org.antlr.v4.runtime.atn.ATNDeserializer');
 const LexerATNSimulator = goog.require('org.antlr.v4.runtime.atn.LexerATNSimulator');
 const PredictionContextCache = goog.require('org.antlr.v4.runtime.atn.PredictionContextCache');
 <lexer>
+
+exports = <lexerFile.lexer.name>;
+
 >>
 
 
 
 Lexer(lexer, atn, actionFuncs, sempredFuncs, superClass) ::= <<
 <if(superClass)>
-const <superClass> = goog.require('<if(file.genPackage)><file.genPackage>.<endif><superClass>');
+const <superClass> = goog.require("<if(lexerFile.genPackage)><lexerFile.genPackage>.<endif><superClass>");
 <else>
-const Lexer = goog.require('org.antlr.v4.runtime.atn.Lexer');
+const Lexer = goog.require('org.antlr.v4.runtime.Lexer');
+const DFA = goog.require('org.antlr.v4.runtime.dfa.DFA');
 <endif>
 
 RuntimeMetaData.checkVersion("<lexerFile.ANTLRVersion>", RuntimeMetaData.VERSION);
@@ -1208,43 +1244,43 @@ class <lexer.name> extends <superClass; null="Lexer"> {
 		super(input);
 		this._interp = new LexerATNSimulator(this, <lexer.name>._ATN, <lexer.name>._decisionToDFA, <lexer.name>._sharedContextCache);
 	}
-
 	getGrammarFileName() {
         return "<lexer.grammarFileName>";
     }
-
 	getRuleNames() {
         return <lexer.name>.ruleNames;
     }
-
-
 	getSerializedATN() {
         return <lexer.name>._serializedATN;
     }
-
-
 	getChannelNames() {
         return <lexer.name>.channelNames;
     }
-
-
 	getModeNames() {
         return <lexer.name>.modeNames;
     }
-
-
 	getATN() {
         return <lexer.name>._ATN;
     }
-
 	<dumpActions(lexer, "", actionFuncs, sempredFuncs)>
-	<atn>
 }
 
+<atn>
+
 /**
- * @protected {!Array<org.antlr.v4.runtime.dfa.DFA>}
+ * @type {string}
  */
-<lexer.name>._decisionToDFA = [];
+<lexer.name>._serializedATN = _serializedATN;
+
+/**
+ * @type {!org.antlr.v4.runtime.atn.ATN}
+ */
+<lexer.name>._ATN = _ATN;
+
+/**
+ * @protected {!Array\<org.antlr.v4.runtime.dfa.DFA>}
+ */
+<lexer.name>._decisionToDFA = _decisionToDFA;
 
 /**
  * @protected {!PredictionContextCache}
@@ -1264,25 +1300,25 @@ class <lexer.name> extends <superClass; null="Lexer"> {
 <endif>
 
 /**
- * @type {!Array<string>}
+ * @type {!Array\<string>}
  */
 <lexer.name>.channelNames = ["DEFAULT_TOKEN_CHANNEL", "HIDDEN"<if (lexer.channels)>, <lexer.channels:{c| "<c>"}; separator=", ", wrap, anchor><endif>];
 
 /**
- * @type {!Array<string>}
+ * @type {!Array\<string>}
  */
 <lexer.name>.modeNames = [<lexer.modes:{m| "<m>"}; separator=", ", wrap, anchor>];
 
 /**
  * @private
- * @return {!Array<string>}
+ * @return {!Array\<string>}
  */
 <lexer.name>.makeRuleNames = function () {
     return [<lexer.ruleNames:{r | "<r>"}; separator=", ", wrap, anchor>];
 };
 
 /**
- * @type {!Array<string>}
+ * @type {!Array\<string>}
  */
 <lexer.name>.ruleNames = <lexer.name>.makeRuleNames();
 
@@ -1295,7 +1331,23 @@ class <lexer.name> extends <superClass; null="Lexer"> {
 SerializedATN(model) ::= <<
 <! only one segment, can be inlined !>
 
-var serializedATN = ["<model.serialized; wrap={",<\n>    "}>"].join("");
+/**
+ * @type {string}
+ */
+const _serializedATN = ["<model.serialized; wrap={",<\n>    "}>"].join("");
+
+/**
+ * @type {!org.antlr.v4.runtime.atn.ATN}
+ */
+const _ATN = new ATNDeserializer().deserialize(_serializedATN);
+
+/**
+ * @type {!Array\<org.antlr.v4.runtime.dfa.DFA>}
+ */
+const _decisionToDFA = [];
+for (let i = 0; i \< _ATN.getNumberOfDecisions(); i++) {
+    _decisionToDFA[i] = new DFA(_ATN.getDecisionState(i), i);
+}
 
 >>
 
