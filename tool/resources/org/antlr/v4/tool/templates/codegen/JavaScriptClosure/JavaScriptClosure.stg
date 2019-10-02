@@ -37,16 +37,16 @@
  */
 
 javascriptTypeInitMap ::= [
-	"bool":"false",
-	"int":"0",
-	"float":"0.0",
-	"str":"",
-	default:"{}" // anything other than a primitive type is an object
+    "bool":"false",
+    "int":"0",
+    "float":"0.0",
+    "str":"",
+    default:"{}" // anything other than a primitive type is an object
 ]
 
 closureTypeMap ::= [
-	"int":"number",
-	"float":"number",
+    "int":"number",
+    "float":"number",
     default:false
 ]
 
@@ -82,7 +82,7 @@ const FailedPredicateException = goog.require('org.antlr.v4.runtime.FailedPredic
 const <file.grammarName>Listener = goog.require("<if(file.genPackage)><file.genPackage>.<endif><file.grammarName>Listener");
 <endif>
 <if(file.genVisitor)>
-const <file.grammarName>Visitor = goog.require("<if(file.genPackage)><file.genPackage>.<endif><file.grammarName>Visitor");
+const <file.grammarName>BaseVisitor = goog.require("<if(file.genPackage)><file.genPackage>.<endif><file.grammarName>BaseVisitor");
 <endif>
 <parser>
 >>
@@ -153,7 +153,7 @@ goog.module.declareLegacyNamespace();
  * @implements {<if(file.genPackage)><file.genPackage>.<endif><file.grammarName>Listener}
  */
 class <file.grammarName>BaseListener {
-	<file.listenerNames:{lname |
+    <file.listenerNames:{lname |
 /**
  * The default implementation does nothing.
  */
@@ -222,7 +222,7 @@ const ParseTreeVisitor = goog.require('org.antlr.v4.runtime.tree.ParseTreeVisito
  * @extends {ParseTreeVisitor\<T>}
  */
 class <file.grammarName>Visitor extends ParseTreeVisitor {
-	<file.visitorNames:{lname |
+    <file.visitorNames:{lname |
 /**
 <if(file.visitorLabelRuleNames.(lname))>
  * Visit a parse tree produced by the {@code <lname>\}
@@ -262,13 +262,15 @@ const AbstractParseTreeVisitor = goog.require('org.antlr.v4.runtime.tree.Abstrac
  * @extends {AbstractParseTreeVisitor\<T>}
  */
 class <file.grammarName>BaseVisitor extends AbstractParseTreeVisitor {
-	<file.visitorNames:{lname |
+    <file.visitorNames:{lname |
 /**
  * The default implementation returns the result of calling
  * {@link #visitChildren\} on {@code ctx\}.
  */
 visit<lname; format="cap">(ctx) { return this.visitChildren(ctx); \}}; separator="\n">
 }
+
+exports = <file.grammarName>BaseVisitor;
 >>
 
 
@@ -295,26 +297,26 @@ const Parser = goog.require('org.antlr.v4.runtime.Parser');
 RuntimeMetaData.checkVersion("<file.ANTLRVersion>", RuntimeMetaData.VERSION);
 
 class <parser.name> extends <superClass; null="Parser"> {
-	<namedActions.members>
-	<parser:(ctor)()>
-	getGrammarFileName() {
+    <namedActions.members>
+    <parser:(ctor)()>
+    getGrammarFileName() {
         return "<parser.grammarFileName; format="java-escape">";
     }
-	getRuleNames() {
+    getRuleNames() {
         return <parser.name>.ruleNames;
     }
-	getSerializedATN() {
+    getSerializedATN() {
         return <parser.name>._serializedATN;
     }
-	getATN() {
+    getATN() {
         return <parser.name>._ATN;
     }
-	getTokenNames() {
-		return <parser.name>.tokenNames;
-	}
-	getVocabulary() {
-		return <parser.name>.VOCABULARY;
-	}
+    getTokenNames() {
+        return <parser.name>.tokenNames;
+    }
+    getVocabulary() {
+        return <parser.name>.VOCABULARY;
+    }
 <if(sempredFuncs)>
     /**
      * @param {org.antlr.v4.runtime.RuleContext} _localctx
@@ -322,15 +324,15 @@ class <parser.name> extends <superClass; null="Parser"> {
      * @param {number} predIndex
      * @return {boolean}
      */
-	sempred(_localctx, ruleIndex, predIndex) {
-		switch (ruleIndex) {
-		<parser.sempredFuncs.values:{f|
+    sempred(_localctx, ruleIndex, predIndex) {
+        switch (ruleIndex) {
+        <parser.sempredFuncs.values:{f|
 case <f.ruleIndex>:
-	return this.<f.name>_sempred(/** @type {<f.ctxType>\} */ (_localctx), predIndex);}; separator="\n">
-		}
-		return true;
-	}
-	<sempredFuncs.values; separator="\n">
+    return this.<f.name>_sempred(/** @type {<f.ctxType>\} */ (_localctx), predIndex);}; separator="\n">
+        }
+        return true;
+    }
+    <sempredFuncs.values; separator="\n">
 <endif>
 }
 
@@ -390,7 +392,7 @@ vocabulary(name, literalNames, symbolicNames) ::= <<
  * @return {!Array\<?string>}
  */
 <name>.makeLiteralNames = function () {
-	return [<literalNames:{t | <t>}; null="null", separator=", ", wrap, anchor>];
+    return [<literalNames:{t | <t>}; null="null", separator=", ", wrap, anchor>];
 };
 
 /**
@@ -403,7 +405,7 @@ vocabulary(name, literalNames, symbolicNames) ::= <<
  * @return {!Array\<?string>}
  */
 <name>.makeSymbolicNames = function () {
-	return [<symbolicNames:{t | <t>}; null="null", separator=", ", wrap, anchor>];
+    return [<symbolicNames:{t | <t>}; null="null", separator=", ", wrap, anchor>];
 }
 
 /**
@@ -438,12 +440,12 @@ for (let i = 0; i \< <name>._SYMBOLIC_NAMES.length; i++) {
 dumpActions(recog, argFuncs, actionFuncs, sempredFuncs) ::= <<
 <if(actionFuncs)>
 action(_localctx, ruleIndex, actionIndex) {
-	switch (ruleIndex) {
-	<recog.actionFuncs.values:{f|
+    switch (ruleIndex) {
+    <recog.actionFuncs.values:{f|
 case <f.ruleIndex>:
-	<f.name>_action(/** @type {<f.ctxType>\} */ (_localctx), actionIndex);
-	break;}; separator="\n">
-	}
+    <f.name>_action(/** @type {<f.ctxType>\} */ (_localctx), actionIndex);
+    break;}; separator="\n">
+    }
 }
 
 <actionFuncs.values; separator="\n">
@@ -451,12 +453,12 @@ case <f.ruleIndex>:
 <if(sempredFuncs)>
 
 sempred(_localctx, ruleIndex, predIndex) {
-	switch (ruleIndex) {
-	<recog.sempredFuncs.values:{f|
+    switch (ruleIndex) {
+    <recog.sempredFuncs.values:{f|
 case <f.ruleIndex>:
-	return <f.name>_sempred(/** @type {<f.ctxType>\} */ (_localctx), predIndex);}; separator="\n">
-	}
-	return true;
+    return <f.name>_sempred(/** @type {<f.ctxType>\} */ (_localctx), predIndex);}; separator="\n">
+    }
+    return true;
 }
 
 <sempredFuncs.values; separator="\n">
@@ -470,8 +472,8 @@ parser_ctor(p) ::= <<
  * @param {org.antlr.v4.runtime.TokenStream} input
  */
 constructor(input) {
-	super(input);
-	this._interp = new ParserATNSimulator(this, <p.name>._ATN, <p.name>._decisionToDFA, <p.name>._sharedContextCache);
+    super(input);
+    this._interp = new ParserATNSimulator(this, <p.name>._ATN, <p.name>._decisionToDFA, <p.name>._sharedContextCache);
 }
 >>
 
@@ -488,12 +490,12 @@ RuleActionFunction(r, actions) ::= <<
  * @return {void}
  */
 <r.name>_action(_localctx, actionIndex) {
-	switch (actionIndex) {
-	<actions:{index|
+    switch (actionIndex) {
+    <actions:{index|
 case <index>:
-	<actions.(index)>
-	break;}; separator="\n">
-	}
+    <actions.(index)>
+    break;}; separator="\n">
+    }
 }
 >>
 
@@ -510,12 +512,12 @@ RuleSempredFunction(r, actions) ::= <<
  * @return {boolean}
  */
 <r.name>_sempred(_localctx, predIndex) {
-	switch (predIndex) {
-	<actions:{index|
+    switch (predIndex) {
+    <actions:{index|
 case <index>:
-	return <actions.(index)>;}; separator="\n">
-	}
-	return true;
+    return <actions.(index)>;}; separator="\n">
+    }
+    return true;
 }
 >>
 
@@ -531,25 +533,25 @@ RuleFunction(currentRule,args,code,locals,ruleCtx,altLabelCtxs,namedActions,fina
  * @throws {RecognitionException}
  */
 <parser.name>.prototype.<currentRule.name> = function (<currentRule.args:{a | <a.name>}; separator=", ">) {
-	var _localctx = new <currentRule.ctxType>(this._ctx, this.getState()<currentRule.args:{a | , <a.name>}>);
-	this.enterRule(_localctx, <currentRule.startState>, <parser.name>.RULE_<currentRule.name>);
-	<namedActions.init>
-	<locals; separator="\n">
-	try {
+    var _localctx = new <currentRule.ctxType>(this._ctx, this.getState()<currentRule.args:{a | , <a.name>}>);
+    this.enterRule(_localctx, <currentRule.startState>, <parser.name>.RULE_<currentRule.name>);
+    <namedActions.init>
+    <locals; separator="\n">
+    try {
 <if(currentRule.hasLookaheadBlock)>
         /**
          * @type {number}
          */
-		var _alt;
+        var _alt;
 <endif>
-		<code>
-		<postamble; separator="\n">
-		<namedActions.after>
-	}
-	<if(exceptions)>
-	<exceptions; separator="\n">
-	<else>
-	catch (re) {
+        <code>
+        <postamble; separator="\n">
+        <namedActions.after>
+    }
+    <if(exceptions)>
+    <exceptions; separator="\n">
+    <else>
+    catch (re) {
         if(re instanceof RecognitionException) {
             _localctx.exception = re;
             this._errHandler.reportError(this, re);
@@ -557,20 +559,20 @@ RuleFunction(currentRule,args,code,locals,ruleCtx,altLabelCtxs,namedActions,fina
         } else {
             throw re;
         }
-	}
-	<endif>
-	finally {
-		<finallyAction>
-		this.exitRule();
-	}
-	return _localctx;
+    }
+    <endif>
+    finally {
+        <finallyAction>
+        this.exitRule();
+    }
+    return _localctx;
 };
 >>
 
 
 
 LeftRecursiveRuleFunction(currentRule,args,code,locals,ruleCtx,altLabelCtxs,
-	namedActions,finallyAction,postamble) ::=
+    namedActions,finallyAction,postamble) ::=
 <<
 
 <ruleCtx>
@@ -586,39 +588,39 @@ LeftRecursiveRuleFunction(currentRule,args,code,locals,ruleCtx,altLabelCtxs,
     if(_p == null) {
         _p = 0;
     }
-	var _parentctx = this._ctx;
-	var _parentState = this.getState();
-	var _localctx = new <currentRule.ctxType>(this._ctx, _parentState<currentRule.args:{a | , <a.name>}>);
-	var _prevctx = _localctx;
-	var _startState = <currentRule.startState>;
-	this.enterRecursionRule(_localctx, <currentRule.startState>, <parser.name>.RULE_<currentRule.name>, _p);
-	<namedActions.init>
-	<locals; separator="\n">
-	try {
+    var _parentctx = this._ctx;
+    var _parentState = this.getState();
+    var _localctx = new <currentRule.ctxType>(this._ctx, _parentState<currentRule.args:{a | , <a.name>}>);
+    var _prevctx = _localctx;
+    var _startState = <currentRule.startState>;
+    this.enterRecursionRule(_localctx, <currentRule.startState>, <parser.name>.RULE_<currentRule.name>, _p);
+    <namedActions.init>
+    <locals; separator="\n">
+    try {
 <if(currentRule.hasLookaheadBlock)>
         /**
          * @type {number}
          */
-		var _alt;
+        var _alt;
 <endif>
-		<code>
-		<postamble; separator="\n">
-		<namedActions.after>
-	}
-	catch (re) {
-		if (re instanceof RecognitionException) {
+        <code>
+        <postamble; separator="\n">
+        <namedActions.after>
+    }
+    catch (re) {
+        if (re instanceof RecognitionException) {
             _localctx.exception = re;
             this._errHandler.reportError(this, re);
             this._errHandler.recover(this, re);
         } else {
             throw re;
         }
-	}
-	finally {
-		<finallyAction>
-		this.unrollRecursionContexts(_parentctx);
-	}
-	return _localctx;
+    }
+    finally {
+        <finallyAction>
+        this.unrollRecursionContexts(_parentctx);
+    }
+    return _localctx;
 };
 >>
 
@@ -649,10 +651,10 @@ this._errHandler.sync(this);
 <preamble; separator="\n">
 switch (this._input.LA(1)) {
 <choice.altLook,alts:{look,alt| <cases(ttypes=look)>
-	<alt>
-	break;}; separator="\n">
+    <alt>
+    break;}; separator="\n">
 default:
-	<error>
+    <error>
 }
 >>
 
@@ -662,10 +664,10 @@ this.setState(<choice.stateNumber>);
 this._errHandler.sync(this);
 switch (this._input.LA(1)) {
 <choice.altLook,alts:{look,alt| <cases(ttypes=look)>
-	<alt>
-	break;}; separator="\n">
+    <alt>
+    break;}; separator="\n">
 default:
-	break;
+    break;
 }
 >>
 
@@ -676,7 +678,7 @@ this.setState(<choice.stateNumber>);
 this._errHandler.sync(this);
 <preamble; separator="\n">
 if (<expr>) {
-	<alts; separator="\n">
+    <alts; separator="\n">
 }
 <!else if (!(<followExpr>)) <error>!>
 >>
@@ -688,10 +690,10 @@ this.setState(<choice.stateNumber>);
 this._errHandler.sync(this);
 <preamble; separator="\n">
 while (<loopExpr>) {
-	<alts; separator="\n">
-	this.setState(<choice.loopBackStateNumber>);
-	this._errHandler.sync(this);
-	<iteration>
+    <alts; separator="\n">
+    this.setState(<choice.loopBackStateNumber>);
+    this._errHandler.sync(this);
+    <iteration>
 }
 >>
 
@@ -702,10 +704,10 @@ this.setState(<choice.blockStartStateNumber>); <! alt block decision !>
 this._errHandler.sync(this);
 <preamble; separator="\n">
 do {
-	<alts; separator="\n">
-	this.setState(<choice.stateNumber>); <! loopback/exit decision !>
-	this._errHandler.sync(this);
-	<iteration>
+    <alts; separator="\n">
+    this.setState(<choice.stateNumber>); <! loopback/exit decision !>
+    this._errHandler.sync(this);
+    <iteration>
 } while (<loopExpr>);
 >>
 
@@ -721,8 +723,8 @@ this._errHandler.sync(this);
 switch (this.getInterpreter().adaptivePredict(this._input, <choice.decision>, this._ctx)) {
 <alts:{alt |
 case <i>:
-	<alt>
-	break;}; separator="\n">
+    <alt>
+    break;}; separator="\n">
 }
 >>
 
@@ -734,8 +736,8 @@ this._errHandler.sync(this);
 switch (this.getInterpreter().adaptivePredict(this._input, <choice.decision>, this._ctx)) {
 <alts:{alt |
 case <i><if(!choice.ast.greedy)>+1<endif>:
-	<alt>
-	break;}; separator="\n">
+    <alt>
+    break;}; separator="\n">
 }
 >>
 
@@ -746,13 +748,13 @@ this.setState(<choice.stateNumber>);
 this._errHandler.sync(this);
 _alt = this.getInterpreter().adaptivePredict(this._input, <choice.decision>, this._ctx);
 while (_alt != <choice.exitAlt> && _alt != ATN.INVALID_ALT_NUMBER) {
-	if (_alt == 1<if(!choice.ast.greedy)>+1<endif> ) {
-		<iteration>
-		<alts> <! should only be one !>
-	}
-	this.setState(<choice.loopBackStateNumber>);
-	this._errHandler.sync(this);
-	_alt = this.getInterpreter().adaptivePredict(this._input, <choice.decision>, this._ctx);
+    if (_alt == 1<if(!choice.ast.greedy)>+1<endif> ) {
+        <iteration>
+        <alts> <! should only be one !>
+    }
+    this.setState(<choice.loopBackStateNumber>);
+    this._errHandler.sync(this);
+    _alt = this.getInterpreter().adaptivePredict(this._input, <choice.decision>, this._ctx);
 }
 >>
 
@@ -763,17 +765,17 @@ this.setState(<choice.blockStartStateNumber>); <! alt block decision !>
 this._errHandler.sync(this);
 _alt = 1<if(!choice.ast.greedy)>+1<endif>;
 do {
-	switch (_alt) {
-	<alts:{alt|
+    switch (_alt) {
+    <alts:{alt|
 case <i><if(!choice.ast.greedy)>+1<endif>:
-	<alt>
-	break;}; separator="\n">
-	default:
-		<error>
-	}
-	this.setState(<choice.loopBackStateNumber>); <! loopback/exit decision !>
-	this._errHandler.sync(this);
-	_alt = this.getInterpreter().adaptivePredict(this._input, <choice.decision>, this._ctx);
+    <alt>
+    break;}; separator="\n">
+    default:
+        <error>
+    }
+    this.setState(<choice.loopBackStateNumber>); <! loopback/exit decision !>
+    this._errHandler.sync(this);
+    _alt = this.getInterpreter().adaptivePredict(this._input, <choice.decision>, this._ctx);
 } while (_alt != <choice.exitAlt> && _alt != ATN.INVALID_ALT_NUMBER);
 >>
 
@@ -867,12 +869,12 @@ this.setState(<m.stateNumber>);
 <if(m.labels)><m.labels:{l | <labelref(l)> = }>this._input.LT(1);<endif>
 <capture>
 if (<if(invert)><m.varName> \<= 0 || <else>!<endif>(<expr>)) {
-	<if(m.labels)><m.labels:{l | <labelref(l)> = /** @type {Token\} */ (}><endif>this._errHandler.recoverInline(this)<if(m.labels)>)<endif>;
+    <if(m.labels)><m.labels:{l | <labelref(l)> = /** @type {Token\} */ (}><endif>this._errHandler.recoverInline(this)<if(m.labels)>)<endif>;
 }
 else {
-	if (this._input.LA(1) == Token.EOF) this.matchedEOF = true;
-	this._errHandler.reportMatch(this);
-	this.consume();
+    if (this._input.LA(1) == Token.EOF) this.matchedEOF = true;
+    this._errHandler.reportMatch(this);
+    this.consume();
 }
 >>
 
@@ -904,7 +906,7 @@ if (!(<chunks>)) throw new FailedPredicateException(this, <p.predicate><if(failC
 
 ExceptionClause(e, catchArg, catchAction) ::= <<
 catch (<catchArg>) {
-	<catchAction>
+    <catchAction>
 }
 >>
 
@@ -958,7 +960,7 @@ ThisRulePropertyRef_parser(r)	 ::= "this"
 
 NonLocalAttrRef(s)		 ::= "/** @type {<s.ruleName; format=\"cap\">Context> */ (getInvokingContext(<s.ruleIndex>)).<s.name>"
 SetNonLocalAttr(s, rhsChunks)	  ::=
-	"/** @type {<s.ruleName; format=\"cap\">Context> */ (getInvokingContext(<s.ruleIndex>)).<s.name> = <rhsChunks>;"
+    "/** @type {<s.ruleName; format=\"cap\">Context> */ (getInvokingContext(<s.ruleIndex>)).<s.name> = <rhsChunks>;"
 
 AddToLabelList(a) ::= "<ctx(a.label)>.<a.listName>.push(<labelref(a.label)>);"
 
@@ -1060,7 +1062,7 @@ CaptureNextTokenType(d) ::= "<d.varName> = this._input.LA(1);"
 
 
 StructDecl(struct,ctorAttrs,attrs,getters,dispatchMethods,interfaces,extensionMembers)
-	::= <<
+    ::= <<
 <if(interfaces)>/** @implements {<interfaces; separator=", ">} */<endif>
 class <struct.name> extends <if(contextSuperClass)><contextSuperClass><else>ParserRuleContext<endif> {
     /**
@@ -1068,10 +1070,10 @@ class <struct.name> extends <if(contextSuperClass)><contextSuperClass><else>Pars
      * @param {number=} invokingState<ctorAttrs:{a | \n     * @param {<if(closureTypeMap.(a.type))><closureTypeMap.(a.type)><else><a.type><endif>=\} <a.name>}>
      */
     constructor(parent, invokingState<ctorAttrs:{a | , <a.name>}>) {
-		super(parent, invokingState);
+        super(parent, invokingState);
         <attrs:{a | <a>}; separator="\n">
-		<struct.ctorAttrs:{a | /** @type {<if(closureTypeMap.(a.type))><closureTypeMap.(a.type)><else><a.type><endif>\} */ this.<a.name> = <a.name>;}; separator="\n">
-	}
+        <struct.ctorAttrs:{a | /** @type {<if(closureTypeMap.(a.type))><closureTypeMap.(a.type)><else><a.type><endif>\} */ this.<a.name> = <a.name>;}; separator="\n">
+    }
     getRuleIndex() {
         return <parser.name>.RULE_<struct.derivedFromName>;
     }
@@ -1081,13 +1083,13 @@ class <struct.name> extends <if(contextSuperClass)><contextSuperClass><else>Pars
      * @param {ParserRuleContext} ctx
      * @return {void}
      */
-	copyFrom(ctx) {
-		super.copyFrom(ctx);
-		<struct.attrs:{a | this.<a.name> = ctx.<a.name>;}; separator="\n">
-	}
+    copyFrom(ctx) {
+        super.copyFrom(ctx);
+        <struct.attrs:{a | this.<a.name> = ctx.<a.name>;}; separator="\n">
+    }
 <endif>
-	<dispatchMethods; separator="\n">
-	<extensionMembers; separator="\n">
+    <dispatchMethods; separator="\n">
+    <extensionMembers; separator="\n">
 }
 
 <! export this struct/context class !>
@@ -1102,13 +1104,13 @@ class <struct.name> extends <currentRule.name; format="cap">Context {
     /**
      * @param {<currentRule.name; format="cap">Context} ctx
      */
-	constructor(ctx) {
+    constructor(ctx) {
         super();
         <attrs:{a | <a>;}; separator="\n">
         this.copyFrom(ctx);
     }
     <getters:{g | <g>}; separator="\n">
-<dispatchMethods; separator="\n">
+    <dispatchMethods; separator="\n">
 }
 
 <! export this struct/context class !>
@@ -1120,8 +1122,8 @@ exports.<struct.name> = <struct.name>;
 
 ListenerDispatchMethod(method) ::= <<
 <if(method.isEnter)>enter<else>exit<endif>Rule(listener) {
-	if (listener instanceof <parser.grammarName>Listener) {
-        let l = /** @type {<parser.grammarName>Listener} */ (listener);
+    if (listener instanceof <parser.grammarName>BaseListener) {
+        let l = /** @type {<parser.grammarName>BaseListener} */ (listener);
         l.<if(method.isEnter)>enter<else>exit<endif><struct.derivedFromName; format="cap">(this);
     }
 }
@@ -1131,8 +1133,8 @@ ListenerDispatchMethod(method) ::= <<
 
 VisitorDispatchMethod(method) ::= <<
 accept(visitor) {
-	if (visitor instanceof <parser.grammarName>Visitor) {
-        return /** @type {<parser.grammarName>Visitor} */ (visitor).visit<struct.derivedFromName; format="cap">(this);
+    if (visitor instanceof <parser.grammarName>BaseVisitor) {
+        return /** @type {<parser.grammarName>BaseVisitor} */ (visitor).visit<struct.derivedFromName; format="cap">(this);
     } else {
         return visitor.visitChildren(this);
     }
@@ -1240,29 +1242,29 @@ class <lexer.name> extends <superClass; null="Lexer"> {
     /**
      * @param {org.antlr.v4.runtime.CharStream} input
      */
-	constructor(input) {
-		super(input);
-		this._interp = new LexerATNSimulator(this, <lexer.name>._ATN, <lexer.name>._decisionToDFA, <lexer.name>._sharedContextCache);
-	}
-	getGrammarFileName() {
+    constructor(input) {
+        super(input);
+        this._interp = new LexerATNSimulator(this, <lexer.name>._ATN, <lexer.name>._decisionToDFA, <lexer.name>._sharedContextCache);
+    }
+    getGrammarFileName() {
         return "<lexer.grammarFileName>";
     }
-	getRuleNames() {
+    getRuleNames() {
         return <lexer.name>.ruleNames;
     }
-	getSerializedATN() {
+    getSerializedATN() {
         return <lexer.name>._serializedATN;
     }
-	getChannelNames() {
+    getChannelNames() {
         return <lexer.name>.channelNames;
     }
-	getModeNames() {
+    getModeNames() {
         return <lexer.name>.modeNames;
     }
-	getATN() {
+    getATN() {
         return <lexer.name>._ATN;
     }
-	<dumpActions(lexer, "", actionFuncs, sempredFuncs)>
+    <dumpActions(lexer, "", actionFuncs, sempredFuncs)>
 }
 
 <atn>
